@@ -1,0 +1,26 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Ask{% endblock title %}
+
+{% load static %}
+{% load bootstrap5 %}
+
+{% block content %}
+
+<div class="d-flex gap-3 align-items-center">
+  <h1>New Question</h1>
+</div>
+<div class="col-8">
+  <form method="POST">
+    {% csrf_token %}
+      {% bootstrap_form form %}
+
+      {% buttons %}
+        <button class="btn btn-primary" type="submit">Ask</button>
+      {% endbuttons %}
+
+  </form>
+</div>
+
+{% endblock %}
+      

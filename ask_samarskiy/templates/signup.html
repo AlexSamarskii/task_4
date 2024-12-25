@@ -1,0 +1,24 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load bootstrap5 %}
+
+{% block title %}Signup{% endblock title %}
+
+{% block content %}
+
+<div class="d-flex gap-3 align-items-center ml-3">
+</div>                
+<div class="col-lg-9 w-50 mx-auto">
+    <h1>Register</h1>
+    <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+        {% bootstrap_form form %}
+
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">Register</button>
+        {% endbuttons %}
+    </form>
+</div>
+
+{% endblock %}
+

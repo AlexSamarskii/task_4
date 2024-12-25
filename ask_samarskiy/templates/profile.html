@@ -1,0 +1,42 @@
+{% extends "layouts/base.html" %}
+{% load bootstrap5 %}
+
+{% block title %}Profile{% endblock title %}
+
+{% load static %}
+    
+  {% block content %}
+
+  <style>
+    .wrapper {
+      width: 150px;
+      height: 150px;
+      border: 1px solid #515151;
+    }
+    .exmp3 img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+
+  <div class="d-flex gap-3 align-items-center">
+    <h1>Settings: {{ user.username }}</h1>
+  </div>
+  {% csrf_token %}
+    <div class="col-8">
+        <div class="mb-3 row">
+            {% bootstrap_form  form %}
+             
+            {% if user.profile.avatar %}
+            <img src="{{ user.profile.image.url }}" style="width: 150px; height: 150px;">
+            {% else %}
+            <img src="{% static 'img/profile.jpg' %}" style="width: 100px; height: 100px;">
+            {% endif %}
+        </div>
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">Save</button>
+        {% endbuttons %}
+    </div>
+ {% endblock %}  
+    

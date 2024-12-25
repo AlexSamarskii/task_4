@@ -1,0 +1,53 @@
+{% load static %}
+
+{% block content %}
+<style>
+    .wrapper {
+      width: 200px;
+      height: 200px;
+      border: 1px solid #515151;
+    }
+    .exmp3 img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
+</style>
+
+<article class="card mb-3 w-80">
+    <div class="row g-0">
+        <div class="col-3 p-2">
+            <div class="border w-100 mb-3" style="height: 200px">
+                <img class="wrapper exmp3"
+                    src={{ answer.author.image }}
+                    alt="..."/>
+            </div>
+            <div class="row mt-2 justify-content-center">
+                {{ answer.author.user.username }}
+            </div>
+            <div class="input-group flex-nowrap">
+                <div class="input-group flex-nowrap">
+                    <input type="number" value={{ answer.likes }} class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="/question.html">{{ answer.title }}</a>
+                </h5>
+                <p class="card-text">{{ answer.text }}</p>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            {% if answer.corect %}
+                                <input type="checkbox" checked disabled> Correct!
+                            {% else %}
+                                <input type="checkbox"> On Check
+                            {% endif %}
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</article>
+{% endblock content %}

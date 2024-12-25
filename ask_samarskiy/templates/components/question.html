@@ -1,0 +1,53 @@
+{% load static %}
+
+{% block content %}
+<style>
+  .wrapper {
+    width: 200px;
+    height: 200px;
+    border: 1px solid #515151;
+  }
+  .exmp3 img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<article class="card mb-3 w-80">
+    <div class="row g-0">
+      <div class="col-3 p-2">
+        <div class="border w-100 mb-3" style="height: 200px">
+          <img class="wrapper exmp3"
+           src={{ question.author.image }}
+           alt="...">
+        </div>
+        <div class = "mt-2 row justify-content-center">
+          {{ question.author.user.username}}
+        </div>
+        <div class="input-group flex-nowrap">
+          <input type="number" value={{ question.likes }} class="form-control" />
+        </div>
+      </div>
+      <div class="col-9">
+        <div class="card-body">
+          <h5 class="card-title">
+            <a href="{% url 'one_question' question.id %}">{{ question.title }}</a>
+          </h5>
+          <p class="card-text">
+            {{ question.text }}
+          </p>
+          <div class="row">
+            <a class="col-4" href="{% url 'one_question' question.id %}">answers {{ answers_count }} </a>
+            <div class="col-8">
+              <span>Tags: </span>
+              {% for tag in question.tags.all %}
+                <a href="{% url 'tag' tag.title %}">{{tag.title}}</a>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+  {% endblock %}
