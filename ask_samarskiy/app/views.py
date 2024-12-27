@@ -32,15 +32,6 @@ from django.contrib.auth.decorators import login_required
 # 'answers': ANSWERS
 #     } for i in range(30)
 # ]
-styles = [
-                'text-bg-primary', 'text-bg-secondary', 'text-bg-success', 'text-bg-danger',
-                'text-bg-warning', 'text-bg-info', 'text-bg-light', 'text-bg-dark'
-        ]
-
-fixed = {'best_profiles': Profile.objects.best(), 
-            'popular_tags': [[tag, style] for tag, style in zip(Tag.objects.most_popular(), styles)]
-}
-
 def paginator(object_list, request, per_page=10):
     required_page = []
     paginator = Paginator(object_list, per_page)
@@ -60,11 +51,15 @@ def paginator(object_list, request, per_page=10):
 
 def index(request):
     return render(request, template_name="index.html",
-                  context={'questions': paginator(Question.objects.new(), request)} | fixed)
+                  context={'questions': paginator(Question.objects.new(), request), 
+                           'popular_tags': Tag.objects.most_popular(),
+                           'best_profiles': Profile.objects.best()})
 
 def hot(request):
     return render(request, template_name="hot.html",
-                  context={'questions': paginator(Question.objects.hot(), request)} | fixed)
+                  context={'questions': paginator(Question.objects.hot(), request),
+                           'popular_tags': Tag.objects.most_popular(),
+                           'best_profiles': Profile.objects.best()})
     
     
 def question(request, question_id):
@@ -72,7 +67,9 @@ def question(request, question_id):
     answers = paginator(Answer.objects.answers_for_question(question_id), request, 5)
     return render(request, template_name="one-question.html",
                   context={'question': one_question,
-                           'answers': answers} | fixed)
+                           'answers': answers,
+                           'popular_tags': Tag.objects.most_popular(),
+                           'best_profiles': Profile.objects.best()})
 
 def question_form(request, question_id):
     form = AnswerForm(request.user, question_id)
@@ -87,7 +84,9 @@ def question_form(request, question_id):
             return redirect(reverse('one_question', args=[question_id]) + f'?page={1}')
     return render(request, 'one-question.html', context={'question': question,
                     'answers': answers,
-                    'form': form} | fixed)
+                    'form': form,
+                    'popular_tags': Tag.objects.most_popular(),
+                    'best_profiles': Profile.objects.best()})
 
                      
 def login(request):
@@ -102,7 +101,9 @@ def login(request):
             else:
                 form.add_error(None, error='Invalid username or password')
     return render(request, template_name='login.html', 
-                    context={'form': form} | fixed)
+                    context={'form': form,
+                             'popular_tags': Tag.objects.most_popular(),
+                            'best_profiles': Profile.objects.best()})
     
 def logout(request):
     auth.logout(request)
@@ -119,7 +120,9 @@ def signup(request):
                 return redirect('index')
         else:
             print(form.errors)
-    return render(request, 'signup.html', context={'form': form} | fixed)
+    return render(request, 'signup.html', context={'form': form,
+                                                   'popular_tags': Tag.objects.most_popular(),
+                                                    'best_profiles': Profile.objects.best()})
     
 # def ask(request):
 #     form = AskForm(request.POST)
@@ -136,7 +139,9 @@ def ask_form(request):
         if form.is_valid():
             question = form.save()
             return redirect('one_question', question_id=question.id)
-    return render(request, 'ask.html', context={'form': form} | fixed)
+    return render(request, 'ask.html', context={'form': form, 
+                                                'popular_tags': Tag.objects.most_popular(),
+                                                'best_profiles': Profile.objects.best()})
 
 
 @login_required(login_url='/login/')
@@ -148,7 +153,9 @@ def profile(request):
             user = form.save()
             auth.login(request, user)
             return redirect('profile')
-    return render(request, 'profile.html', context={'form': form} | fixed)
+    return render(request, 'profile.html', context={'form': form,
+                                                    'popular_tags': Tag.objects.most_popular(),
+                                                    'best_profiles': Profile.objects.best()})
     
 
 # def profile_edit(request):
@@ -165,7 +172,9 @@ def profile(request):
 def tag(request, tag_name):
     tag = Tag.objects.get(title=tag_name)
     return render(request, 'tag.html',
-                  context={'tag': tag, 'questions': paginator(Question.objects.by_tag(tag_name), request)} | fixed)
+                  context={'tag': tag, 'questions': paginator(Question.objects.by_tag(tag_name), request),
+                           'popular_tags': Tag.objects.most_popular(),
+                           'best_profiles': Profile.objects.best()})
 
 
  

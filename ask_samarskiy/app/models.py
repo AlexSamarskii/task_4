@@ -17,7 +17,12 @@ class Profile(models.Model):
 
 class TagManager(models.Manager):
     def most_popular(self):
-        return self.annotate(quest_count=Count('question')).order_by('-quest_count')[:10]
+        styles = [
+                'text-bg-primary', 'text-bg-secondary', 'text-bg-success', 'text-bg-danger',
+                'text-bg-warning', 'text-bg-info', 'text-bg-light', 'text-bg-dark'
+        ]
+        tags = self.annotate(quest_count=Count('question')).order_by('-quest_count')[:8]
+        return [[tag, style] for tag, style in zip(tags, styles)]
         
 
 class Tag(models.Model):
